@@ -35,11 +35,15 @@ class Record:
             return False
 
     def edit_phone(self, old_number, new_number):
-            for phone in self.phones:
-                if phone.value == old_number:
-                    phone.value = new_number
-                    return True
-            raise ValueError(f"Old number {old_number} not found in the list")
+            try:
+                Phone(new_number)
+            except ValueError:
+                raise ValueError("invalid new number")
+            if self.remove_phone(old_number):
+                self.add_phone(new_number)
+                return True
+            else:
+                raise ValueError(f"Old number {old_number} not found")
     
     def find_phone(self, number):
         for phone in self.phones:
